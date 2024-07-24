@@ -70,4 +70,4 @@ There are three user of this Application:-
 ![leucine](https://github.com/user-attachments/assets/b76bd0fa-7b5c-44ec-a588-c2dad5ba2b7e)
 
 
-## Video explanations -  [Link]([https://github.com/rajsaurabh78/LibrarySystemFrontend](https://drive.google.com/file/d/1xQVF2SGUH4tKJJoFX9sLTeRJ0al16UgC/view?usp=sharing))
+## Video explanations -  [Link](https://drive.google.com/file/d/1xQVF2SGUH4tKJJoFX9sLTeRJ0al16UgC/view?usp=sharing)
