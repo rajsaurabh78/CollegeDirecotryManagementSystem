@@ -1,0 +1,62 @@
+package com.leucine.controller;
+
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.leucine.dto.FacultyProfileDTO;
+import com.leucine.dto.FacultyProfileUpdateDTO;
+import com.leucine.dto.StudentFacultyDTO;
+import com.leucine.modal.FacultyProfile;
+import com.leucine.modal.Users;
+import com.leucine.service.FacultyProfileService;
+import com.leucine.service.StudentProfileService;
+
+import jakarta.validation.Valid;
+
+@RestController
+public class FacultyController {
+	
+	@Autowired
+	private FacultyProfileService facultyProfileService;
+	
+	
+	@Autowired
+	private StudentProfileService studentProfileService;
+	
+	
+	
+	@GetMapping("/users/facultyProfiles")
+	public ResponseEntity<List<FacultyProfile>> facultyProfilesController(){
+		List<FacultyProfile> us=studentProfileService.facultyProfiles();
+		return new ResponseEntity<>(us,HttpStatus.OK);
+	}
+	
+	@GetMapping("/faculty/profile")
+	public ResponseEntity<Users> ownProfileController(){
+		Users us=facultyProfileService.ownProfile();
+		return new ResponseEntity<>(us,HttpStatus.OK);
+	}
+	
+	@GetMapping("/users/studentfacultylist")
+	public ResponseEntity<List<StudentFacultyDTO>> studentFacultyListController(){
+		List<StudentFacultyDTO> us=facultyProfileService.studentFacultyList();
+		return new ResponseEntity<>(us,HttpStatus.OK);
+	}
+	
+	
+	@PostMapping("/user/department/{id}")
+	public ResponseEntity<FacultyProfile> createFacultyController(@Valid @PathVariable("id") Integer id,
+			@Valid @RequestBody FacultyProfileDTO facultyProfileDTO){
+		FacultyProfile us=facultyProfileService.createFaculty(id,facultyProfileDTO);
+		return new ResponseEntity<>(us,HttpStatus.CREATED);
+	}
+	
+}

@@ -1,0 +1,70 @@
+package com.leucine.controller;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RestController;
+
+import com.leucine.dto.FacultyProfileDTO;
+import com.leucine.modal.Course;
+import com.leucine.modal.Department;
+import com.leucine.modal.FacultyProfile;
+import com.leucine.modal.Users;
+import com.leucine.service.CourseService;
+import com.leucine.service.DepartmentService;
+import com.leucine.service.FacultyProfileService;
+import com.leucine.service.UserService;
+
+import jakarta.validation.Valid;
+
+@RestController
+public class UserController {
+	
+	@Autowired
+	private UserService userService;
+	
+	@Autowired
+	private FacultyProfileService facultyProfileService;
+	
+	@Autowired
+	private DepartmentService departmentService;
+	
+	@Autowired
+	private CourseService courseService;
+	
+	@PostMapping("/user")
+	public ResponseEntity<Users> createUserController(@Valid @RequestBody Users user){
+		Users us=userService.createUser(user);
+		return new ResponseEntity<>(us,HttpStatus.CREATED);
+	}
+	
+	@GetMapping("/profile")
+	public ResponseEntity<Users> ownProfileController(){
+		Users us=userService.ownProfile();
+		return new ResponseEntity<>(us,HttpStatus.OK);
+	}
+	
+	@PostMapping("/user/department/{id}")
+	public ResponseEntity<FacultyProfile> createFacultyController(@Valid @PathVariable("id") Integer id,
+			@Valid @RequestBody FacultyProfileDTO facultyProfileDTO){
+		FacultyProfile us=facultyProfileService.createFaculty(id,facultyProfileDTO);
+		return new ResponseEntity<>(us,HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/user/department")
+	public ResponseEntity<Department> createDepartmentController(@Valid @RequestBody Department department){
+		Department us=departmentService.createDepartment(department);
+		return new ResponseEntity<>(us,HttpStatus.CREATED);
+	}
+	
+	@PostMapping("/user/course")
+	public ResponseEntity<Course> createCourseController(@Valid @RequestBody Course course){
+		Course us=courseService.createCourse(course);
+		return new ResponseEntity<>(us,HttpStatus.CREATED);
+	}
+
+}

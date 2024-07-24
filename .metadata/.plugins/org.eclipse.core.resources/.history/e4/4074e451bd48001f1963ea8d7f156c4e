@@ -1,0 +1,5 @@
+package com.leucine.dto;
+
+public class UserUpdateDTO {
+
+}

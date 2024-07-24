@@ -1,0 +1,12 @@
+package com.leucine.repository;
+
+import java.util.Optional;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.leucine.modal.FacultyProfile;
+import com.leucine.modal.Users;
+
+public interface FacultyProfileRepository extends JpaRepository<FacultyProfile, Integer>{
+	Optional<Users> findByUsername(String username);
+}

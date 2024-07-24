@@ -1,0 +1,10 @@
+package com.leucine.service;
+
+import com.leucine.exception.LoginException;
+import com.leucine.modal.Users;
+
+public interface StudentProfileService {
+	public Users createUser(Users user);
+	public Users ownProfile()throws LoginException;
+	public Users updateUser(Users user)throws LoginException;
+}

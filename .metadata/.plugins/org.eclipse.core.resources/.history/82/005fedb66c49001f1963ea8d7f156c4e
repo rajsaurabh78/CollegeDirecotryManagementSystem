@@ -1,0 +1,133 @@
+package com.leucine.service;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.leucine.dto.StudentDTO;
+import com.leucine.dto.StudentProfileDTO;
+import com.leucine.exception.DepartmentException;
+import com.leucine.exception.LoginException;
+import com.leucine.exception.StudentException;
+import com.leucine.modal.Course;
+import com.leucine.modal.Department;
+import com.leucine.modal.Enrollment;
+import com.leucine.modal.StudentProfile;
+import com.leucine.modal.Users;
+import com.leucine.repository.DepartmentRepository;
+import com.leucine.repository.FacultyProfileRepository;
+import com.leucine.repository.StudentProfileRepository;
+import com.leucine.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+@Service
+public class StudentProfileServiceImpl implements StudentProfileService{
+	
+	@Autowired
+	private FacultyProfileRepository facultyProfileRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
+	
+	@Autowired
+	private StudentProfileRepository studentProfileRepository;
+
+	@Override
+	@Transactional
+	public StudentProfile createStudent(Integer id,StudentProfileDTO studentProfileDto){
+		
+		Department department=departmentRepository.findById(id)
+				.orElseThrow(()-> new DepartmentException("Inviled department id."));
+		
+		Users user=new Users();
+		user.setPassword(passwordEncoder.encode(studentProfileDto.getPassword()));
+		user.setEmail(studentProfileDto.getEmail());
+		user.setName(studentProfileDto.getName());
+		user.setPhone(studentProfileDto.getPhone());
+		user.setRole(studentProfileDto.getRole());
+		user.setUsername(studentProfileDto.getUsername());
+		
+		
+		StudentProfile studentProfile=new StudentProfile();
+		studentProfile.setYear(studentProfileDto.getYear());
+		studentProfile.setPhoto(studentProfileDto.getPhoto());
+		studentProfile.setDepartment(department);
+		studentProfile.setUser(user);
+		user.setStudentProfile(studentProfile);
+		userRepository.save(user);
+		departmentRepository.save(department);
+		return studentProfileRepository.save(studentProfile);
+		 
+	}
+
+	@Override
+	public StudentDTO ownProfile() throws LoginException {
+		
+		//checking user exist or not
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		Users user = userRepository.findByUsername(authentication.getName())
+				.orElseThrow(() -> new LoginException("Please Login First"));
+		
+		StudentDTO st= new StudentDTO();
+		st.setStudentProfile(user.getStudentProfile());
+		List<Enrollment>enrollments= user.getStudentProfile().getEnrollments();
+		List<Course> courses=new ArrayList<>();
+		for(Enrollment en:enrollments) {
+			courses.add(en.getCourse());
+		}
+		st.setCourses(courses);
+		return st;
+	
+	}
+
+
+	@Override
+	public List<Users> findByName(String name) {
+
+		List<Users> users=userRepository.findByNameContaining(name);
+		if(users.isEmpty()) {
+			throw new StudentException("Empty list");
+		}
+		return users;
+	}
+
+	@Override
+	public List<Users> findByYear(String Year) {
+
+		List<Users> dtos=studentProfileRepository.findByYearContaining(Year)
+				.stream().map(s->s.getUser()).collect(Collectors.toList());
+		if(dtos.isEmpty()) {
+			throw new StudentException("Empty list");
+		}
+		
+		return dtos;
+		
+	}
+
+	@Override
+	public List<Users> findByDEpartment(String department) {
+		
+		List<Users> dtos=studentProfileRepository.findByDepartmentNameContaining(department)
+				.stream().map(s->s.getUser()).collect(Collectors.toList());
+		if(dtos.isEmpty()) {
+			throw new StudentException("Empty list");
+		}
+		
+		return dtos;
+	}
+
+	
+
+}

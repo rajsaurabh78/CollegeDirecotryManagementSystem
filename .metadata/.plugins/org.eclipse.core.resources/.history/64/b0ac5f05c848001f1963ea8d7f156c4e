@@ -1,0 +1,9 @@
+package com.leucine.repository;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+
+import com.leucine.modal.FacultyProfile;
+
+public interface FacultyProfileRepository extends JpaRepository<FacultyProfile, Integer>{
+
+}

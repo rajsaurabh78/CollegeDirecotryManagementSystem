@@ -1,0 +1,12 @@
+package com.leucine.service;
+
+import com.leucine.exception.LoginException;
+import com.leucine.modal.Course;
+import com.leucine.modal.Users;
+
+public interface CourseService {
+	
+	public Course createCourse(Course course);
+	public Course updateCourse(Course course)throws LoginException;
+
+}

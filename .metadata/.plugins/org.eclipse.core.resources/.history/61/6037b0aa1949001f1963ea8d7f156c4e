@@ -1,0 +1,29 @@
+package com.leucine.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.leucine.exception.CourseException;
+import com.leucine.modal.Course;
+import com.leucine.repository.CourseRepository;
+@Service
+public class CourseServiceImpl implements CourseService{
+
+	@Autowired
+	private CourseRepository courseRepository;
+	
+	@Override
+	public Course createCourse(Course course) {
+
+		Course savedCourse=courseRepository.save(course);
+		return savedCourse;
+		
+	}
+
+	@Override
+	public Course updateCourse(Course course) throws CourseException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,84 @@
+package com.leucine.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.leucine.dto.StudentProfileDTO;
+import com.leucine.exception.DepartmentException;
+import com.leucine.exception.LoginException;
+import com.leucine.modal.Department;
+import com.leucine.modal.StudentProfile;
+import com.leucine.modal.Users;
+import com.leucine.repository.DepartmentRepository;
+import com.leucine.repository.FacultyProfileRepository;
+import com.leucine.repository.StudentProfileRepository;
+import com.leucine.repository.UserRepository;
+
+import jakarta.transaction.Transactional;
+@Service
+public class StudentProfileServiceImpl implements StudentProfileService{
+	
+	@Autowired
+	private FacultyProfileRepository facultyProfileRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
+	
+	@Autowired
+	private StudentProfileRepository studentProfileRepository;
+
+	@Override
+	@Transactional
+	public StudentProfile createStudent(Integer id,StudentProfileDTO studentProfileDto){
+		
+		Department department=departmentRepository.findById(id)
+				.orElseThrow(()-> new DepartmentException("Inviled department id."));
+		
+		Users user=new Users();
+		user.setPassword(passwordEncoder.encode(studentProfileDto.getPassword()));
+		user.setEmail(studentProfileDto.getEmail());
+		user.setName(studentProfileDto.getName());
+		user.setPhone(studentProfileDto.getPhone());
+		user.setRole(studentProfileDto.getRole());
+		user.setUsername(studentProfileDto.getUsername());
+		
+		
+		StudentProfile studentProfile=new StudentProfile();
+		studentProfile.setYear(studentProfileDto.getYear());
+		studentProfile.setPhoto(studentProfileDto.getPhoto());
+		studentProfile.setDepartment(department);
+		studentProfile.setUser(user);
+		user.setStudentProfile(studentProfile);
+		List<StudentProfile>studentProfiles=new ArrayList<>();
+		department.setStudents(studentProfiles);
+		userRepository.save(user);
+		departmentRepository.save(department);
+		return studentProfileRepository.save(studentProfile);
+		 
+	}
+
+	@Override
+	public Users ownProfile() throws LoginException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Users updateUser(Users user) throws LoginException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	
+
+}

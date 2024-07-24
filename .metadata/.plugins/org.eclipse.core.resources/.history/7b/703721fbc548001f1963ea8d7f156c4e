@@ -1,0 +1,41 @@
+package com.leucine.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.leucine.exception.LoginException;
+import com.leucine.modal.Users;
+import com.leucine.repository.UserRepository;
+
+@Service
+public class UserServiceImol implements UserService{
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Override
+	public Users createUser(Users user) {
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Users savedUser=userRepository.save(user);
+		return savedUser;
+	
+	}
+
+	@Override
+	public Users ownProfile() throws LoginException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public Users updateUser(Users user) throws LoginException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

@@ -1,0 +1,46 @@
+package com.leucine.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.leucine.exception.LoginException;
+import com.leucine.modal.Users;
+import com.leucine.repository.UserRepository;
+
+@Service
+public class UserServiceImol implements UserService{
+	
+	@Autowired
+	private UserRepository userRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Override
+	public Users createUser(Users user) {
+		
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Users savedUser=userRepository.save(user);
+		return savedUser;
+	
+	}
+
+	@Override
+	public Users ownProfile() throws LoginException {
+		//checking user exist or not
+				Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+				Users user = userRepository.findByUsername(authentication.getName())
+						.orElseThrow(() -> new LoginException("Please Login First"));
+				return user;
+	}
+
+	@Override
+	public Users updateUser(Users user) throws LoginException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

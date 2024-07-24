@@ -1,0 +1,45 @@
+package com.leucine.service;
+
+import java.util.ArrayList;
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.leucine.exception.CourseException;
+import com.leucine.exception.DepartmentException;
+import com.leucine.modal.Course;
+import com.leucine.modal.Department;
+import com.leucine.repository.CourseRepository;
+import com.leucine.repository.DepartmentRepository;
+@Service
+public class CourseServiceImpl implements CourseService{
+
+	@Autowired
+	private CourseRepository courseRepository;
+	
+	@Autowired
+	private DepartmentRepository departmentRepository;
+	
+	@Override
+	public Course createCourse(Integer id,Course course) {
+		
+		Department department=departmentRepository.findById(id)
+				.orElseThrow(()-> new DepartmentException("Inviled department id : "+id));
+		
+		List<Course> courses=new ArrayList<>();
+		course.setDepartment(department);
+		courses.add(course);
+		department.setCourses(courses);
+		Course savedCourse=courseRepository.save(course);
+		return savedCourse;
+		
+	}
+
+	@Override
+	public Course updateCourse(Course course) throws CourseException {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+}

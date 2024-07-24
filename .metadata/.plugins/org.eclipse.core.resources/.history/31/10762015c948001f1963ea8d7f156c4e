@@ -1,0 +1,39 @@
+package com.leucine.service;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.leucine.dto.FacultyProfileDTO;
+import com.leucine.exception.LoginException;
+import com.leucine.modal.FacultyProfile;
+import com.leucine.modal.Users;
+import com.leucine.repository.FacultyProfileRepository;
+@Service
+public class FacultyProfileServiceImpl implements FacultyProfileService{
+	
+	@Autowired
+	private FacultyProfileRepository facultyProfileRepository;
+	
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+
+	@Override
+	public FacultyProfile createFaculty(FacultyProfileDTO facultyProfileDTO) {
+		user.setPassword(passwordEncoder.encode(user.getPassword()));
+		Users savedUser=userRepository.save(user);
+		return savedUser;
+	}
+
+	@Override
+	public FacultyProfileDTO ownProfile() throws LoginException {
+		//checking user exist or not
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		FacultyProfileDTO user = facultyProfileRepository.findByUsername(authentication.getName())
+				.orElseThrow(() -> new LoginException("Please Login First"));
+		return user;
+	}
+
+}

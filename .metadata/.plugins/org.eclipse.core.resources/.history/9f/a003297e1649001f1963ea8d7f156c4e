@@ -1,0 +1,12 @@
+package com.leucine.service;
+
+import com.leucine.dto.FacultyProfileDTO;
+import com.leucine.exception.DepartmentException;
+import com.leucine.exception.LoginException;
+import com.leucine.modal.FacultyProfile;
+
+public interface FacultyProfileService {
+	public FacultyProfile createFaculty(Integer id,Integer cid,FacultyProfileDTO facultyProfileDTO) throws DepartmentException;
+	public FacultyProfile ownProfile()throws LoginException;
+//	public FacultyProfile updateUser(Users user)throws LoginException;
+}

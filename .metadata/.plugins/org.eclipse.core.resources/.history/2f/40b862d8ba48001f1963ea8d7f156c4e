@@ -1,0 +1,5 @@
+package com.leucine.repository;
+
+public class FacultyProfileRepository extends JpaRepository{
+
+}

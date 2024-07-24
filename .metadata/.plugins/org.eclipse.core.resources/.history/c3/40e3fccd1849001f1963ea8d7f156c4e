@@ -1,0 +1,11 @@
+package com.leucine.service;
+
+import java.util.List;
+
+import com.leucine.modal.Department;
+
+public interface DepartmentService {
+	
+	public Department createDepartment(List<Integer> cid,Department department);
+
+}

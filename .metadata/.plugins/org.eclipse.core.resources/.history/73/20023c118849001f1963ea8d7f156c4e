@@ -1,0 +1,12 @@
+package com.leucine.service;
+
+import com.leucine.dto.AdministratorProfileDTO;
+import com.leucine.exception.LoginException;
+import com.leucine.modal.AdministratorProfile;
+import com.leucine.modal.Users;
+
+public interface AdministratorProfileService {
+	public AdministratorProfile createAdministrator(Integer id,AdministratorProfileDTO administratorProfileDTO);
+	public Users ownProfile()throws LoginException;
+	public Users updateUser(Users user)throws LoginException;
+}

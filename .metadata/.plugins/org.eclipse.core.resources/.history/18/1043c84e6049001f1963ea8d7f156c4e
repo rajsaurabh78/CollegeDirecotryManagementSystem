@@ -1,0 +1,13 @@
+package com.leucine.service;
+
+import com.leucine.dto.StudentDTO;
+import com.leucine.dto.StudentProfileDTO;
+import com.leucine.exception.LoginException;
+import com.leucine.modal.StudentProfile;
+import com.leucine.modal.Users;
+
+public interface StudentProfileService {
+	public StudentProfile createStudent(Integer id,StudentProfileDTO studentProfileDto);
+	public StudentDTO ownProfile()throws LoginException;
+	public Users updateUser(Users user)throws LoginException;
+}

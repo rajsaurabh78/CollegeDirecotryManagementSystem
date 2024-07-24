@@ -1,0 +1,19 @@
+package com.leucine.dto;
+
+import com.leucine.modal.Course;
+import com.leucine.modal.Users;
+
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
+public class StudentDTO {
+	
+	private Users user;
+	private StudentProfile studentProfile;
+	private Course course;
+
+}
