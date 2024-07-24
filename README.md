@@ -15,7 +15,7 @@ The College Directory Management System is designed to manage and streamline the
 - Sts
 - Spring Security
 
-There are two user of this Application:-
+There are three user of this Application:-
 
     Student
     Faculty Member
@@ -54,7 +54,7 @@ There are two user of this Application:-
 
 4. search student by department
 
-## Roles for a Student:
+## Roles for a faculty:
 
 1. get own profile
 
